@@ -1,0 +1,28 @@
+{
+    "name": "drupal/webauthn",
+    "description": "This module aims to support the upcoming \"Web Authentication\" protocol, that leverages Public Key Credentials to provide password-less login along with stronger security.",
+    "type": "drupal-module",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dennis A. Torres Rodriguez",
+            "email": "d70rr3s@gmail.com"
+        }
+    ],
+    "homepage": "https://www.drupal.org/project/webauthn",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/webauthn",
+        "source": "https://git.drupalcode.org/project/webauthn"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "apcu-autoloader": true
+    },
+    "require": {
+        "drupal/core": "^8.6",
+        "web-auth/webauthn-lib": "dev-master"
+    }
+}
