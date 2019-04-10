@@ -1,0 +1,6 @@
+name: WebAuthn
+type: module
+description: This module aims to support the upcoming "Web Authentication" protocol, that leverages Public Key Credentials to provide password-less login along with stronger security.
+package: Security
+version: VERSION
+core: 8.x
