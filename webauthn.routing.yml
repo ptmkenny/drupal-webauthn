@@ -1,0 +1,10 @@
+
+webauthn.settings_form:
+  path: '/admin/config/people/webauthn'
+  defaults:
+    _form: '\Drupal\webauthn\Form\SettingsForm'
+    _title: 'WebAuthn settings'
+  requirements:
+    _permission: 'administer account settings'
+  options:
+    _admin_route: TRUE

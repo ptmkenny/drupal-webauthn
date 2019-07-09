@@ -1,0 +1,3 @@
+webauthn:
+  replace_registration_form: false
+  replace_login_form: false

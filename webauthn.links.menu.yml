@@ -1,0 +1,7 @@
+webauthn.settings_form:
+  title: 'WebAuthn'
+  route_name: webauthn.settings_form
+  description: 'Configure how WebAuthn standard will operate for this site.'
+  parent: user.admin_index
+  weight: 99
+
