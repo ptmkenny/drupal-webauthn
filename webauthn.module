@@ -4,3 +4,29 @@
  * @file
  * This is the WebAuthn module for password-less authentication.
  */
+
+use Drupal\webauthn\Form\PublicKeyCredentialCreationForm;
+
+/**
+ * Implements hook_entity_type_build().
+ *
+ * Use module configuration to determine if replace the registration form or
+ * add a custom operation to the user entity.
+ */
+function webauthn_entity_type_build(&$entity_types) {
+  if (!isset($entity_types['user'])) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $user_type */
+  $user_type = $entity_types['user'];
+  $config = \Drupal::config('webauthn.settings');
+  // By default, create a new operation for registering.
+  $operation = 'webauthn';
+
+  if (!empty($config->get('replace_registration_form'))) {
+    $operation = 'register';
+  }
+
+  $user_type->setFormClass($operation, PublicKeyCredentialCreationForm::class);
+}
