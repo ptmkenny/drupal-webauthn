@@ -1,3 +1,5 @@
+route_callbacks:
+  - 'webauthn.routing.route_provider:routes'
 
 webauthn.settings_form:
   path: '/admin/config/people/webauthn'

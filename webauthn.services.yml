@@ -1,0 +1,4 @@
+services:
+  webauthn.routing.route_provider:
+    class: Drupal\webauthn\Routing\RouteProvider
+    arguments: ['@config.factory']
