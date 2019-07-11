@@ -49,7 +49,7 @@ class UserRouteAlterSubscriber implements EventSubscriberInterface {
     $routes = $event->getRouteCollection();
     if (($route = $routes->get('user.login'))
       && !empty($this->config->get('replace_login_form'))) {
-      $route->setRequirement('_form', PublicKeyCredentialRequestForm::class);
+      $route->setDefault('_form', PublicKeyCredentialRequestForm::class);
     }
   }
 
