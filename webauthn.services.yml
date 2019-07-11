@@ -2,3 +2,9 @@ services:
   webauthn.routing.route_provider:
     class: Drupal\webauthn\Routing\RouteProvider
     arguments: ['@config.factory']
+
+  webauthn.event_subscriber.user_route_alter:
+    class: Drupal\webauthn\EventSubscriber\UserRouteAlterSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }
