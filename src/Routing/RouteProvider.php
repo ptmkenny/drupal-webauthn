@@ -29,13 +29,13 @@ class RouteProvider {
     $this->config = $config_factory->get('webauthn.settings');
   }
 
-
   /**
    * Defines register/login routes.
    */
   public function routes() {
+    $route_collection = new RouteCollection();
+
     if (empty($this->config->get('replace_registration_form'))) {
-      $route_collection = new RouteCollection();
       $route = (new Route('/webauthn/register'))
         ->setDefaults([
           '_entity_form' => 'user.webauthn',
@@ -45,12 +45,9 @@ class RouteProvider {
           '_access_user_register' => 'TRUE',
         ]);
       $route_collection->add('webauthn.register', $route);
-
-      return $route_collection;
     }
 
     if (empty($this->config->get('replace_login_form'))) {
-      $route_collection = new RouteCollection();
       $route = (new Route('/webauthn/login'))
         ->setDefaults([
           '_form' => PublicKeyCredentialRequestForm::class,
@@ -60,9 +57,9 @@ class RouteProvider {
           '_user_is_logged_in' => 'FALSE',
         ]);
       $route_collection->add('webauthn.login', $route);
-
-      return $route_collection;
     }
+
+    return $route_collection;
   }
 
 }
