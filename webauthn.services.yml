@@ -8,3 +8,11 @@ services:
     arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
+
+  webauthn.relying_party_factory:
+    class: Drupal\webauthn\RelyingPartyFactory
+    arguments: ['@config.factory', '@request_stack']
+
+  webauthn.relying_party:
+    class: Webauthn\PublicKeyCredentialRpEntity
+    factory: ['@webauthn.relying_party_factory', 'get']
