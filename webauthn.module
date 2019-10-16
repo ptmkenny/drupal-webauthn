@@ -5,6 +5,7 @@
  * This is the WebAuthn module for password-less authentication.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\webauthn\Form\PublicKeyCredentialCreationForm;
 
 /**
@@ -29,4 +30,17 @@ function webauthn_entity_type_build(&$entity_types) {
   }
 
   $user_type->setFormClass($operation, PublicKeyCredentialCreationForm::class);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @todo Investigate if  can be avoided by implementing a bare account form.
+ */
+function webauthn_form_user_webauthn_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['account']['mail']['#access'] = FALSE;
+  $form['account']['password']['#access'] = FALSE;
+  $form['user_picture']['#access'] = FALSE;
+  $form['contact']['#access'] = FALSE;
+  $form['timezone']['#access'] = FALSE;
 }
