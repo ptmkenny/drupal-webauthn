@@ -3,5 +3,11 @@ composer.phar
 /vendor/
 composer.lock
 
+### Node
+node_modules
+
 ### JetBrains template
 .idea
+
+### Development files
+.env
