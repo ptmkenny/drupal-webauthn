@@ -1,5 +1,3 @@
 {
-  "globals": {
-    "Datamap": true
-  }
+  "extends": ["drupal-bundle"]
 }
