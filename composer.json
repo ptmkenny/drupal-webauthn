@@ -2,7 +2,7 @@
     "name": "drupal/webauthn",
     "description": "This module aims to support the upcoming \"Web Authentication\" protocol, that leverages Public Key Credentials to provide password-less login along with stronger security.",
     "type": "drupal-module",
-    "license": "GPL-3.0-or-later",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Dennis A. Torres Rodriguez",
