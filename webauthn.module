@@ -5,6 +5,7 @@
  * This is the WebAuthn module for password-less authentication.
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webauthn\Form\PublicKeyCredentialCreationForm;
 
@@ -30,6 +31,25 @@ function webauthn_entity_type_build(&$entity_types) {
   }
 
   $user_type->setFormClass($operation, PublicKeyCredentialCreationForm::class);
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ *
+ * Override default mail constraint for user.
+ *
+ * @see \Drupal\webauthn\Plugin\Validation\Constraint\WebAuthnUserMailRequired
+ */
+function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
+  if (!empty($fields['mail']) && $entity_type->id() === 'user') {
+    $constraints = $fields['mail']->getConstraints();
+    unset($constraints['UserMailRequired']);
+    $constraints += [
+      'WebAuthnUserMailRequired' => [],
+    ];
+    $fields['mail']->setConstraints($constraints);
+  }
 }
 
 /**
