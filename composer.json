@@ -22,7 +22,7 @@
         "apcu-autoloader": true
     },
     "require": {
-        "drupal/core": "^8.7",
-        "web-auth/webauthn-lib": "dev-master"
+        "drupal/core": "^8.8",
+        "web-auth/webauthn-lib": "^3.0"
     }
 }
