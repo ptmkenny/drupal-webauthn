@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\webauthn\Plugin\Validation\Constraint;
 
 use Drupal\user\Plugin\Validation\Constraint\UserMailRequiredValidator;
