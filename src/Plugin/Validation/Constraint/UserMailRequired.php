@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\webauthn\Plugin\Validation\Constraint;
 
-use Drupal\user\Plugin\Validation\Constraint\UserMailRequired;
+use Drupal\user\Plugin\Validation\Constraint\UserMailRequired as BaseConstraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -22,6 +22,13 @@ use Symfony\Component\Validator\Constraint;
  *   label = @Translation("User email required", context = "Validation")
  * )
  */
-class WebAuthnUserMailRequired extends UserMailRequired {
+class UserMailRequired extends BaseConstraint {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validatedBy() {
+    return UserMailRequiredValidator::class;
+  }
 
 }

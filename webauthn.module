@@ -40,7 +40,7 @@ function webauthn_entity_type_build(&$entity_types) {
  *
  * Override default mail constraint for user.
  *
- * @see \Drupal\webauthn\Plugin\Validation\Constraint\WebAuthnUserMailRequired
+ * @see \Drupal\webauthn\Plugin\Validation\Constraint\UserMailRequired
  */
 function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */

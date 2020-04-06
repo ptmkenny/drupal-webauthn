@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\webauthn\Plugin\Validation\Constraint;
 
-use Drupal\user\Plugin\Validation\Constraint\UserMailRequiredValidator;
+use Drupal\user\Plugin\Validation\Constraint\UserMailRequiredValidator as BaseValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
  * validation if the user has _skipUserMailRequiredConstraint property is set,
  * otherwise fallback to the parent validator.
  */
-class WebAuthnUserMailRequiredValidator extends UserMailRequiredValidator {
+class UserMailRequiredValidator extends BaseValidator {
 
   /**
    * {@inheritdoc}
