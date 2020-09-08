@@ -5,3 +5,9 @@ webauthn.settings_form:
   parent: user.admin_index
   weight: 99
 
+entity.public_key_credential_source.collection:
+  title: 'Public Key Credential Source list'
+  route_name: entity.public_key_credential_source.collection
+  description: 'List Public Key Credential Source entities'
+  parent: entity.user.collection
+  weight: 100

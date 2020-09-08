@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\webauthn\Form\PublicKeyCredentialCreationForm;
 
 /**
@@ -55,14 +56,40 @@ function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $en
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  *
- * @todo Investigate if  can be avoided by implementing a bare account form.
+ * @todo Find a better way to cleanup the form.
  */
-function webauthn_form_user_webauthn_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['account']['mail']['#access'] = FALSE;
-  $form['account']['password']['#access'] = FALSE;
-  $form['user_picture']['#access'] = FALSE;
-  $form['contact']['#access'] = FALSE;
-  $form['timezone']['#access'] = FALSE;
+function webauthn_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'user_webauthn_form'
+    || ($form_id === 'user_register_form'
+      && (bool) \Drupal::config('webauthn.settings')
+        ->get('replace_registration_form') === TRUE)) {
+    if (isset($form['contact'])) {
+      $form['contact']['#access'] = FALSE;
+    }
+
+    if (isset($form['timezone'])) {
+      $form['timezone']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Prepares variables for Public Key Credential Source templates.
+ *
+ * Default template: public_key_credential_source.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_public_key_credential_source(array &$variables) {
+  /** @var \Drupal\webauthn\Entity\PublicKeyCredentialSource $public_key_credential_source */
+  $public_key_credential_source = $variables['elements']['#public_key_credential_source'];
+
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
 }

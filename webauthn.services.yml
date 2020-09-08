@@ -9,10 +9,10 @@ services:
     tags:
       - { name: event_subscriber }
 
-  webauthn.relying_party_factory:
-    class: Drupal\webauthn\RelyingPartyFactory
-    arguments: ['@config.factory', '@request_stack']
+  webauthn.public_key_credential_source.repository:
+    class: Drupal\webauthn\Entity\PublicKeyCredentialSourceRepository
+    arguments: ['@entity_type.manager']
 
-  webauthn.relying_party:
-    class: Webauthn\PublicKeyCredentialRpEntity
-    factory: ['@webauthn.relying_party_factory', 'get']
+  webauthn.server:
+    class: Drupal\webauthn\Server
+    arguments: ['@config.factory', '@entity_type.manager', '@tempstore.private', '@webauthn.public_key_credential_source.repository', '@request_stack']

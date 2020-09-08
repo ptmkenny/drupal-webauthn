@@ -1,0 +1,16 @@
+entity.public_key_credential_source.collection:
+  route_name: entity.public_key_credential_source.collection
+  title: 'Public Keys'
+  base_route: entity.user.collection
+  weight: 100
+
+entity.public_key_credential_source.canonical:
+  route_name: entity.public_key_credential_source.canonical
+  base_route: entity.public_key_credential_source.canonical
+  title: 'View'
+
+entity.public_key_credential_source.delete_form:
+  route_name:  entity.public_key_credential_source.delete_form
+  base_route:  entity.public_key_credential_source.canonical
+  title: Delete
+  weight: 10

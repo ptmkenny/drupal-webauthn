@@ -1,0 +1,10 @@
+add public key credential source entities:
+  title: 'Create new Public Key Credential Source entities'
+
+administer public key credential source entities:
+  title: 'Administer Public Key Credential Source entities'
+  description: 'Allow to access the administration form to configure Public Key Credential Source entities.'
+  restrict access: true
+
+delete public key credential source entities:
+  title: 'Delete Public Key Credential Source entities'

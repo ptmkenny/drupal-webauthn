@@ -1,0 +1,20 @@
+webauthn.settings:
+  type: config_object
+  label: 'WebAuthn settings'
+  mapping:
+    replace_registration_form:
+      type: boolean
+      label: 'Replace registration form'
+    replace_login_form:
+      type: boolean
+      label: 'Replace login form'
+    relying_party:
+      type: mapping
+      label: 'Relying party'
+      mapping:
+        name:
+          type: string
+          label: Name
+        logo:
+          type: string
+          label: Logo

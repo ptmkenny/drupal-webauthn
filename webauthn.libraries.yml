@@ -1,0 +1,8 @@
+attestation:
+  version: VERSION
+  js:
+    js/attestation.js: { minified: false, preprocess: false }
+  css: {}
+  depencencies:
+    - core/drupal
+    - core/drupalSettings
