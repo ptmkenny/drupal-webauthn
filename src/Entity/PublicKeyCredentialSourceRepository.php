@@ -70,7 +70,9 @@ class PublicKeyCredentialSourceRepository implements BasePublicKeyCredentialSour
       return [];
     }
 
-    return $this->storage->loadMultiple($results);
+    return array_map(static function(PublicKeyCredentialSource $entity) {
+      return $entity->getPublicKeyCredentialSource();
+    }, $this->storage->loadMultiple($results));
   }
 
   /**
