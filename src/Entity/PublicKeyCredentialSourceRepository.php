@@ -63,7 +63,7 @@ class PublicKeyCredentialSourceRepository implements BasePublicKeyCredentialSour
    */
   public function findAllForUserEntity(PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity): array {
     $query = $this->storage->getQuery();
-    $results = $query->condition('uid.entity.name', $publicKeyCredentialUserEntity->getName())
+    $results = $query->condition('userHandle.entity.name', $publicKeyCredentialUserEntity->getName())
       ->execute();
 
     if (empty($results)) {
