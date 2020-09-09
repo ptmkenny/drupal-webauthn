@@ -12,7 +12,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\UserInterface;
 use Webauthn\PublicKeyCredentialSource as PKCredentialSource;
-use Webauthn\TrustPath\TrustPath;
 
 /**
  * Defines the Public Key Credential Source entity.
@@ -194,13 +193,13 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
       $this->sourceObject = PKCredentialSource::createFromArray([
         'publicKeyCredentialId' => Base64Url::encode($this->get('publicKeyCredentialId')->value),
         'type' => $this->get('type')->value,
-        'transports' => $this->get('transports')->value,
+        'transports' => $this->get('transports')->first()->value ?? [],
         'attestationType' => $this->get('attestationType')->value,
-        'trustPath' => TrustPath::createFromArray($this->get('trustPath')->value),
+        'trustPath' => $this->get('trustPath')->first()->getValue(),
         'aaguid' => $this->get('aaguid')->value,
         'credentialPublicKey' => Base64Url::encode($this->get('credentialPublicKey')->value),
         'userHandle' => Base64Url::encode($this->getOwner()->uuid()),
-        'counter' => $this->get('counter')->value,
+        'counter' => (int) $this->get('counter')->value,
       ]);
     }
 
