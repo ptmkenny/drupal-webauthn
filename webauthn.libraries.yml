@@ -6,3 +6,12 @@ attestation:
   depencencies:
     - core/drupal
     - core/drupalSettings
+
+assertion:
+  version: VERSION
+  js:
+    js/assertion.js: { minified: false, preprocess: false }
+  css: {}
+  depencencies:
+    - core/drupal
+    - core/drupalSettings

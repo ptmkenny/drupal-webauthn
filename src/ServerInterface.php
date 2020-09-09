@@ -7,7 +7,9 @@ namespace Drupal\webauthn;
 
 use Drupal\user\UserInterface;
 use Webauthn\PublicKeyCredentialCreationOptions;
+use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
+use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialUserEntity;
 
@@ -23,7 +25,7 @@ interface ServerInterface {
    *   The Drupal user.
    *
    * @return \Webauthn\PublicKeyCredentialCreationOptions
-   *   The credential request options.
+   *   The credential creation options.
    */
   public function attestation(UserInterface $user): PublicKeyCredentialCreationOptions;
 
@@ -35,10 +37,34 @@ interface ServerInterface {
    * @param string $response
    *   The authenticator response (JSON encoded).
    *
-   * @return \Webauthn\PublicKeyCredentialSource|null Returns TRUE on success.
-   *   Returns TRUE on success.
+   * @return \Webauthn\PublicKeyCredentialSource|null
+   *   Returns the credential source on success or NULL on error.
    */
-  public function handleAttestation(UserInterface $user, string $response): ?\Webauthn\PublicKeyCredentialSource;
+  public function handleAttestation(UserInterface $user, string $response): ?PublicKeyCredentialSource;
+
+  /**
+   * Start the assertion ceremony for a given user.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The drupal user.
+   *
+   * @return \Webauthn\PublicKeyCredentialRequestOptions
+   *   The credential request options.
+   */
+  public function assertion(UserInterface $user): PublicKeyCredentialRequestOptions;
+
+  /**
+   * Handle assertion response.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user instance.
+   * @param string $response
+   *   The authenticator response (JSON encoded).
+   *
+   * @return \Webauthn\PublicKeyCredentialSource|null
+   *   Returns the credential source on success or NULL on error.
+   */
+  public function handleAssertion(UserInterface $user, string $response): ?PublicKeyCredentialSource;
 
   /**
    * Get a relying party object.

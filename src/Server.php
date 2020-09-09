@@ -18,6 +18,7 @@ use RuntimeException;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webauthn\PublicKeyCredentialCreationOptions;
+use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
 use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialSourceRepository;
@@ -198,6 +199,63 @@ class Server implements ServerInterface {
     }
 
     return $this->createUserEntity(reset($user));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function assertion(UserInterface $user): PublicKeyCredentialRequestOptions {
+    $server = new WebAuthnServer($this->getRp(), $this->pkCredentialSourceRepository, NULL);
+    $user_entity = $this->createUserEntity($user);
+    $sources = $this->pkCredentialSourceRepository->findAllForUserEntity($user_entity);
+    $allowed_credentials = array_filter(array_map(static function (?PublicKeyCredentialSource $credential) {
+      return $credential ? $credential->getPublicKeyCredentialDescriptor() : NULL;
+    }, $sources));
+
+    $options = $server->generatePublicKeyCredentialRequestOptions(
+      PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED,
+      $allowed_credentials
+    );
+    // Store the options to be use later during assertion verification.
+    $this->privateTempStore->set('assertion', Json::encode($options));
+
+    return $options;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function handleAssertion(UserInterface $user, string $response): ?PublicKeyCredentialSource {
+    try {
+      // Convert Symfony request into PSR-7 compatible request.
+      // @link https://symfony.com/doc/3.4/components/psr7.html
+      $psr17Factory = new Psr17Factory();
+      $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+      $request = $psrHttpFactory->createRequest($this->request);
+
+      $data = Json::decode($this->privateTempStore->get('attestation'));
+      /** @var \Webauthn\PublicKeyCredentialRequestOptions $options */
+      $options = PublicKeyCredentialRequestOptions::createFromArray($data);
+
+      if ($options === NULL) {
+        throw new RuntimeException($this->t('No attestation options found for handle :handle', [
+          ':handle' => $user->uuid(),
+        ]));
+      }
+
+      $entity = $this->createUserEntity($user);
+      $server = new WebAuthnServer($this->getRp(), $this->pkCredentialSourceRepository, NULL);
+      return $server->loadAndCheckAssertionResponse(
+        $response,
+        $options,
+        $entity,
+        $request);
+    }
+    catch (Exception $e) {
+      $this->getLogger('webauthn')->error($e->getMessage());
+    }
+
+    return NULL;
   }
 
 }
