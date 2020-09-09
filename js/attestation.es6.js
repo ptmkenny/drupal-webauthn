@@ -1,6 +1,6 @@
 /**
  * @file
- * Implements attestation/assertion behaviors.
+ * Implements attestation behavior.
  */
 (({ behaviors, t }, { webauthn }) => {
   const webAuthnAttestationListener = () => {

@@ -14,7 +14,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 /**
  * @file
- * Implements attestation/assertion behaviors.
+ * Implements attestation behavior.
  */
 (function (_ref, _ref2) {
   var behaviors = _ref.behaviors,
