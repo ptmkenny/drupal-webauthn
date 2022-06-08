@@ -3,3 +3,4 @@ type: module
 description: This module aims to support the upcoming "Web Authentication" protocol, that leverages Public Key Credentials to provide password-less login along with stronger security.
 package: Security
 core_version_requirement: ^8.9 || ^9
+configure: webauthn.settings_form
