@@ -159,6 +159,11 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
       ->setDefaultValue(0)
       ->setRequired(TRUE);
 
+    $fields['otherUI'] = BaseFieldDefinition::create('map')
+      ->setLabel(new TranslatableMarkup('Other UI'))
+      ->setDescription(t('Other information used by the authenticator to inform its UI.'))
+      ->setRequired(FALSE);
+
     return $fields;
   }
 
