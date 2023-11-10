@@ -14,7 +14,7 @@ use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 /**
- * Defines a WebAuthn for Drupal
+ * Defines a WebAuthn for Drupal.
  */
 interface ServerInterface {
 

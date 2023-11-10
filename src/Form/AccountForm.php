@@ -116,7 +116,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
     // out of the system if only one authenticator is registered.
     // To prevent such DO NOT allow changing user name or mail.
     // See https://github.com/w3c/webauthn/issues/1200
-    // @TODO Provide a way create new credentials with different names/email.
+    // @todo Provide a way create new credentials with different names/email.
     if (!$register) {
       $form['account']['details'] = [
         '#type' => 'item',
@@ -170,7 +170,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
       $status = $account->get('status')->value;
     }
     else {
-      $status = (int)($config->get('register') === UserInterface::REGISTER_VISITORS);
+      $status = (int) ($config->get('register') === UserInterface::REGISTER_VISITORS);
     }
 
     $form['account']['status'] = [
@@ -306,11 +306,10 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
    */
   public function buildEntity(array $form, FormStateInterface $form_state) {
     // Change the roles array to a list of enabled roles.
-    // @TODO: Alter the form state as the form values are directly extracted and
+    // @todo Alter the form state as the form values are directly extracted and
     //   set on the field, which throws an exception as the list requires
     //   numeric keys. Allow to override this per field. As this function is
     //   called twice, we have to prevent it from getting the array keys twice.
-
     if (is_string(key($form_state->getValue('roles')))) {
       $form_state->setValue('roles', array_keys(array_filter($form_state->getValue('roles'))));
     }
@@ -320,9 +319,9 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
 
     // Translate the empty value '' of language selects to an unset field.
     foreach ([
-               'preferred_langcode',
-               'preferred_admin_langcode',
-             ] as $field_name) {
+      'preferred_langcode',
+      'preferred_admin_langcode',
+    ] as $field_name) {
       if ($form_state->getValue($field_name) === '') {
         $account->$field_name = NULL;
       }

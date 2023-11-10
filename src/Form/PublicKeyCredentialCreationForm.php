@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\webauthn\ServerInterface;
-use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -196,7 +195,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
           ->getPublicKeyCredentialSourceRepository()
           ->saveCredentialSource($source);
       }
-      catch (Exception $e) {
+      catch (\Exception $e) {
         // Any error here will prevent the user from completing the
         // registration, if so, delete the user account and start all
         // over again.
@@ -222,7 +221,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
         ]);
 
       if ($account->isActive() && !$this->config('user.settings')
-          ->get('verify_mail')) {
+        ->get('verify_mail')) {
         _user_mail_notify('register_no_approval_required', $account);
         user_login_finalize($account);
         $form_state->setRedirect('<front>');

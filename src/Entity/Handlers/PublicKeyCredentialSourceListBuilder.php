@@ -7,7 +7,6 @@ namespace Drupal\webauthn\Entity\Handlers;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Link;
 
 /**
  * Defines a class to build a listing of Public Key Credential Source entities.
@@ -31,7 +30,7 @@ class PublicKeyCredentialSourceListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var \Drupal\webauthn\Entity\PublicKeyCredentialSourceInterface $entity */
+    /** @var \Drupal\webauthn\Entity\PublicKeyCredentialSourceInterface $entity */
     $row['id'] = $entity->getPublicKeyCredentialId();
     $row['device'] = $entity->getDeviceId();
     $row['counter'] = $entity->getCounter();

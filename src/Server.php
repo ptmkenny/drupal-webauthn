@@ -12,9 +12,7 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\user\UserInterface;
-use Exception;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use RuntimeException;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webauthn\PublicKeyCredentialCreationOptions;
@@ -90,9 +88,9 @@ class Server implements ServerInterface {
     $exclude_credentials = [];
 
     if (!$user->isNew()) {
-      // Get the list of authenticators associated to the user
+      // Get the list of authenticators associated to the user.
       $credentialSources = $this->pkCredentialSourceRepository->findAllForUserEntity($user_entity);
-      // Convert the Credential Sources into Public Key Credential Descriptors
+      // Convert the Credential Sources into Public Key Credential Descriptors.
       $exclude_credentials = array_map(static function (PublicKeyCredentialSource $credential) {
         return $credential->getPublicKeyCredentialDescriptor();
       }, $credentialSources);
@@ -136,14 +134,14 @@ class Server implements ServerInterface {
       $user->getAccountName(),
       $user->uuid(),
       $user->getDisplayName() ?? $user->getAccountName()
-    // @TODO Add base64 encoded user picture.
+    // @todo Add base64 encoded user picture.
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function handleAttestation(UserInterface $user, string $response): ?\Webauthn\PublicKeyCredentialSource {
+  public function handleAttestation(UserInterface $user, string $response): ?PublicKeyCredentialSource {
     try {
       // Convert Symfony request into PSR-7 compatible request.
       // @link https://symfony.com/doc/3.4/components/psr7.html
@@ -156,7 +154,7 @@ class Server implements ServerInterface {
       $options = PublicKeyCredentialCreationOptions::createFromArray($data);
 
       if ($options === NULL) {
-        throw new RuntimeException($this->t('No attestation options found for handle :handle', [
+        throw new \RuntimeException($this->t('No attestation options found for handle :handle', [
           ':handle' => $user->uuid(),
         ]));
       }
@@ -164,7 +162,7 @@ class Server implements ServerInterface {
       $server = new WebAuthnServer($this->getRp(), $this->pkCredentialSourceRepository, NULL);
       return $server->loadAndCheckAttestationResponse($response, $options, $request);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       $this->getLogger('webauthn')->error($e->getMessage());
     }
 
@@ -238,7 +236,7 @@ class Server implements ServerInterface {
       $options = PublicKeyCredentialRequestOptions::createFromArray($data);
 
       if ($options === NULL) {
-        throw new RuntimeException($this->t('No attestation options found for handle :handle', [
+        throw new \RuntimeException($this->t('No attestation options found for handle :handle', [
           ':handle' => $user->uuid(),
         ]));
       }
@@ -251,7 +249,7 @@ class Server implements ServerInterface {
         $entity,
         $request);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       $this->getLogger('webauthn')->error($e->getMessage());
     }
 

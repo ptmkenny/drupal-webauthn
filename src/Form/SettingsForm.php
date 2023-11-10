@@ -52,7 +52,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('The name for the site under WebAuthn context. Defaults to Drupal site name.', [], ['context' => 'WebAuthn']),
       '#required' => TRUE,
       '#default_value' => $config->get('relying_party.name') ?? $this->config('system.site')
-          ->get('name'),
+        ->get('name'),
     ];
 
     $form['relying_party']['id'] = [

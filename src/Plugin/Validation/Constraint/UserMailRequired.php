@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\webauthn\Plugin\Validation\Constraint;
 
 use Drupal\user\Plugin\Validation\Constraint\UserMailRequired as BaseConstraint;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * Checks if the user's email address is required.

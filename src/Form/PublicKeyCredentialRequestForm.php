@@ -144,7 +144,6 @@ class PublicKeyCredentialRequestForm extends FormBase {
     }
 
     // $this->renderer->addCacheableDependency($form, $config);
-
     return $form;
   }
 
@@ -313,7 +312,7 @@ class PublicKeyCredentialRequestForm extends FormBase {
 
     if ($this->step === self::ASSERTION_HANDLE) {
       $account = $form_state->get('user');
-      // A destination was set, probably on an exception controller,
+      // A destination was set, probably on an exception controller,.
       if (!$this->getRequest()->request->has('destination')) {
         $form_state->setRedirect(
           'entity.user.canonical',
