@@ -96,9 +96,9 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
 
     // For a new account, there are 2 sub-cases:
     // $self_register: A user creates their own, new, account
-    //   (path '/user/register')
+    // (path '/user/register')
     // $admin_create: An administrator creates a new account for another user
-    //   (path '/admin/people/create')
+    // (path '/admin/people/create')
     // If the current user is logged in and has permission to create users
     // then it must be the second case.
     $admin_create = $register && $account->access('create');
@@ -143,7 +143,8 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
         '#access' => $account->name->access('edit'),
       ];
 
-      // Only show name field on registration form or user can change own username.
+      // Only show name field on registration form
+      // or user can change own username.
       // The mail field is NOT required under WebAuthn perspective.
       // This allows users without email address to be edited and deleted.
       // Also see \Drupal\user\Plugin\Validation\Constraint\UserMailRequired.

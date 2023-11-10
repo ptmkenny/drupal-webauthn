@@ -2,14 +2,10 @@
 
 /**
  * @file
+ * This is the WebAuthn module for password-less authentication.
  */
 
 declare(strict_types=1);
-
-/**
- * @file
- * This is the WebAuthn module for password-less authentication.
- */
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;

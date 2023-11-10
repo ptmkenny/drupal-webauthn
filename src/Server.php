@@ -40,21 +40,29 @@ class Server implements ServerInterface {
   private $config;
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private $entityTypeManager;
 
   /**
+   * The private temp store service.
+   *
    * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
   private $privateTempStore;
 
   /**
+   * The public key credential source repository.
+   *
    * @var \Webauthn\PublicKeyCredentialSourceRepository
    */
   private $pkCredentialSourceRepository;
 
   /**
+   * The request.
+   *
    * @var \Symfony\Component\HttpFoundation\Request
    */
   private $request;
@@ -69,7 +77,9 @@ class Server implements ServerInterface {
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_temp_store
    *   The private temp-store service.
    * @param \Webauthn\PublicKeyCredentialSourceRepository $pk_credential_source_repository
+   *   The public key credential source repository..
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   *   The request.
    */
   public function __construct(ConfigFactoryInterface $configFactory, EntityTypeManagerInterface $entity_type_manager, PrivateTempStoreFactory $private_temp_store, PublicKeyCredentialSourceRepository $pk_credential_source_repository, RequestStack $request) {
     $this->config = $configFactory->get('webauthn.settings');
@@ -154,9 +164,8 @@ class Server implements ServerInterface {
       $options = PublicKeyCredentialCreationOptions::createFromArray($data);
 
       if ($options === NULL) {
-        throw new \RuntimeException($this->t('No attestation options found for handle :handle', [
-          ':handle' => $user->uuid(),
-        ]));
+        $user_uuid = $user->uuid();
+        throw new \RuntimeException("No attestation options found for handle $user_uuid");
       }
 
       $server = new WebAuthnServer($this->getRp(), $this->pkCredentialSourceRepository, NULL);
@@ -236,9 +245,8 @@ class Server implements ServerInterface {
       $options = PublicKeyCredentialRequestOptions::createFromArray($data);
 
       if ($options === NULL) {
-        throw new \RuntimeException($this->t('No attestation options found for handle :handle', [
-          ':handle' => $user->uuid(),
-        ]));
+        $user_uuid = $user->uuid();
+        throw new \RuntimeException("No attestation options found for handle $user_uuid");
       }
 
       $entity = $this->createUserEntity($user);

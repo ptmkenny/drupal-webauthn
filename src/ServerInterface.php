@@ -100,8 +100,10 @@ interface ServerInterface {
    * Create user entity from a Drupal user.
    *
    * @param \Drupal\user\UserInterface|\Drupal\Core\Session\AccountInterface $user
+   *   The Drupal user.
    *
    * @return \Webauthn\PublicKeyCredentialUserEntity
+   *   The public key credential user entity.
    */
   public function createUserEntity(UserInterface $user): PublicKeyCredentialUserEntity;
 

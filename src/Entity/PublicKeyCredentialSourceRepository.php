@@ -19,11 +19,15 @@ class PublicKeyCredentialSourceRepository implements BasePublicKeyCredentialSour
   use StringTranslationTrait;
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private $entityTypeManager;
 
   /**
+   * The entity storage.
+   *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
   private $storage;
@@ -85,10 +89,9 @@ class PublicKeyCredentialSourceRepository implements BasePublicKeyCredentialSour
     $user = $storage->loadByProperties(['uuid' => $publicKeyCredentialSource->getUserHandle()]);
 
     if (empty($user)) {
-      throw new \RuntimeException($this->t('Cannot save credential source :key, the user :handle does not exists.', [
-        ':key' => $publicKeyCredentialSource->getPublicKeyCredentialId(),
-        ':handle' => $publicKeyCredentialSource->getUserHandle(),
-      ]));
+      $key = $publicKeyCredentialSource->getPublicKeyCredentialId();
+      $handle = $publicKeyCredentialSource->getUserHandle();
+      throw new \RuntimeException("Cannot save credential source $key, the user $handle does not exist.");
     }
 
     $entity->setOwner(reset($user));

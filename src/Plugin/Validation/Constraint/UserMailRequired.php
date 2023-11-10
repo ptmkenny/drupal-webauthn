@@ -13,8 +13,8 @@ use Drupal\user\Plugin\Validation\Constraint\UserMailRequired as BaseConstraint;
  * can register an authenticator without using an email.
  *
  * This constraint extends from core's mail constraint and skip mail
- * validation if the user has _skipUserMailRequiredConstraint property is set, otherwise
- * fallback to the parent validator.
+ * validation if the user has _skipUserMailRequiredConstraint property is set,
+ * otherwise fall back to the parent validator.
  *
  * @Constraint(
  *   id = "WebAuthnUserMailRequired",
