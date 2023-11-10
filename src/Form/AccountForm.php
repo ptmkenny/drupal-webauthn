@@ -38,7 +38,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
-  protected $languageManager;
+  protected LanguageManagerInterface $languageManager;
 
   /**
    * Constructs a new AccountForm object.
@@ -60,7 +60,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): AccountForm {
     return new static(
       $container->get('entity.repository'),
       $container->get('language_manager'),
@@ -72,7 +72,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
   /**
    * {@inheritdoc}
    */
-  public static function trustedCallbacks() {
+  public static function trustedCallbacks(): array {
     return ['alterPreferredLangcodeDescription'];
   }
 
@@ -82,7 +82,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
    * @uses \Drupal\webauthn\Form\AccountForm::alterPreferredLangcodeDescription
    * @uses \Drupal\webauthn\Form\AccountForm::syncUserLangcode
    */
-  public function form(array $form, FormStateInterface $form_state) {
+  public function form(array $form, FormStateInterface $form_state): array {
     /** @var \Drupal\user\UserInterface $account */
     $account = $this->entity;
     $user = $this->currentUser();
@@ -278,7 +278,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
    * @return array
    *   The preferred language form element.
    */
-  public function alterPreferredLangcodeDescription(array $element) {
+  public function alterPreferredLangcodeDescription(array $element): array {
     // Only add to the description if the form element has a description.
     if (isset($element['#description'])) {
       $element['#description'] .= ' ' . $this->t("This is also assumed to be the primary language of this account's profile information.");
@@ -298,14 +298,14 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function syncUserLangcode($entity_type_id, UserInterface $user, array &$form, FormStateInterface $form_state) {
+  public function syncUserLangcode(string $entity_type_id, UserInterface $user, array &$form, FormStateInterface $form_state): void {
     $user->getUntranslated()->langcode = $user->preferred_langcode;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildEntity(array $form, FormStateInterface $form_state) {
+  public function buildEntity(array $form, FormStateInterface $form_state): UserInterface {
     // Change the roles array to a list of enabled roles.
     // @todo Alter the form state as the form values are directly extracted and
     //   set on the field, which throws an exception as the list requires
@@ -340,7 +340,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
   /**
    * {@inheritdoc}
    */
-  protected function getEditedFieldNames(FormStateInterface $form_state) {
+  protected function getEditedFieldNames(FormStateInterface $form_state): array {
     return array_merge([
       'name',
       'mail',
@@ -354,7 +354,7 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
   /**
    * {@inheritdoc}
    */
-  protected function flagViolations(EntityConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state) {
+  protected function flagViolations(EntityConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state): void {
     // Manually flag violations of fields not handled by the form display. This
     // is necessary as entity form displays only flag violations for fields
     // contained in the display.

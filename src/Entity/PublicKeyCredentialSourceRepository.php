@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Drupal\webauthn\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Webauthn\PublicKeyCredentialSource as PKCredentialSource;
@@ -23,14 +24,14 @@ class PublicKeyCredentialSourceRepository implements BasePublicKeyCredentialSour
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  private EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The entity storage.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  private $storage;
+  private EntityStorageInterface $storage;
 
   /**
    * PublicKeyCredentialSourceRepository constructor.

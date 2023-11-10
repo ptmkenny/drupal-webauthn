@@ -10,13 +10,14 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\user\UserInterface;
 use Drupal\webauthn\ServerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements a registration form based on PK creation.
  */
-class PublicKeyCredentialCreationForm extends AccountForm {
+final class PublicKeyCredentialCreationForm extends AccountForm {
 
   public const ATTESTATION_PREPARE = 'prepare';
 
@@ -27,14 +28,14 @@ class PublicKeyCredentialCreationForm extends AccountForm {
    *
    * @var \Drupal\webauthn\ServerInterface
    */
-  protected $server;
+  protected ServerInterface $server;
 
   /**
    * The form step.
    *
    * @var string
    */
-  protected $step;
+  protected string $step;
 
   /**
    * {@inheritdoc}
@@ -52,7 +53,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): PublicKeyCredentialCreationForm {
     return new static(
       $container->get('webauthn.server'),
       $container->get('entity.repository'),
@@ -77,7 +78,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  public function form(array $form, FormStateInterface $form_state) {
+  public function form(array $form, FormStateInterface $form_state): array {
     $this->step = $form_state->get('step') ?? self::ATTESTATION_PREPARE;
     $form = parent::form($form, $form_state);
     $form['response'] = [
@@ -99,7 +100,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  protected function actions(array $form, FormStateInterface $form_state) {
+  protected function actions(array $form, FormStateInterface $form_state): array {
     $element = parent::actions($form, $form_state);
     $element['submit']['#attributes']['data-trigger'] = 'webauthn';
     if ($this->step === self::ATTESTATION_PREPARE) {
@@ -117,7 +118,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  public function buildEntity(array $form, FormStateInterface $form_state) {
+  public function buildEntity(array $form, FormStateInterface $form_state): UserInterface {
     $entity = $form_state->get('user');
 
     if ($entity === NULL) {
@@ -134,7 +135,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state): ?UserInterface {
     /** @var \Drupal\user\UserInterface|null $entity */
     $entity = parent::validateForm($form, $form_state);
 
@@ -181,7 +182,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  public function save(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state): int {
     if (!$this->getRequest()->isXmlHttpRequest()) {
       // The `credential_source` is stored during ::validateForm.
       /** @var \Webauthn\PublicKeyCredentialSource $source */
@@ -259,7 +260,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  protected function getEditedFieldNames(FormStateInterface $form_state) {
+  protected function getEditedFieldNames(FormStateInterface $form_state): array {
     return array_merge([
       'name',
       'mail',
@@ -269,7 +270,7 @@ class PublicKeyCredentialCreationForm extends AccountForm {
   /**
    * {@inheritdoc}
    */
-  protected function flagViolations(EntityConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state) {
+  protected function flagViolations(EntityConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state): void {
     // Manually flag violations of fields not handled by the form display. This
     // is necessary as entity form displays only flag violations for fields
     // contained in the display.

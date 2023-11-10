@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Drupal\webauthn;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialRequestOptions;
@@ -105,7 +106,7 @@ interface ServerInterface {
    * @return \Webauthn\PublicKeyCredentialUserEntity
    *   The public key credential user entity.
    */
-  public function createUserEntity(UserInterface $user): PublicKeyCredentialUserEntity;
+  public function createUserEntity(UserInterface|AccountInterface $user): PublicKeyCredentialUserEntity;
 
   /**
    * Get the credential source repository.

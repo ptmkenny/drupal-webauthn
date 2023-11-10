@@ -18,7 +18,8 @@ class PublicKeyCredentialSourceListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function buildHeader() {
+  public function buildHeader(): array {
+    $header = [];
     $header['id'] = $this->t('ID');
     $header['device'] = $this->t('Device');
     $header['counter'] = $this->t('Counter');
@@ -29,8 +30,9 @@ class PublicKeyCredentialSourceListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function buildRow(EntityInterface $entity) {
+  public function buildRow(EntityInterface $entity): array {
     /** @var \Drupal\webauthn\Entity\PublicKeyCredentialSourceInterface $entity */
+    $row = [];
     $row['id'] = $entity->getPublicKeyCredentialId();
     $row['device'] = $entity->getDeviceId();
     $row['counter'] = $entity->getCounter();
@@ -41,7 +43,7 @@ class PublicKeyCredentialSourceListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function getOperations(EntityInterface $entity) {
+  public function getOperations(EntityInterface $entity): array {
     $operations = parent::getOperations($entity);
     // Do not display edit operation since this entity-type cannot be edited
     // from the UI.

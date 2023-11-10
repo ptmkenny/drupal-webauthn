@@ -34,7 +34,7 @@ class TrustPathItem extends MapItem {
   /**
    * {@inheritdoc}
    */
-  public function setValue($values, $notify = TRUE) {
+  public function setValue($values, $notify = TRUE): void {
     if ($values instanceof TrustPath) {
       $values = $values->jsonSerialize();
     }

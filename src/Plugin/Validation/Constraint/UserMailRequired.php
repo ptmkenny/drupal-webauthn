@@ -26,7 +26,7 @@ class UserMailRequired extends BaseConstraint {
   /**
    * {@inheritdoc}
    */
-  public function validatedBy() {
+  public function validatedBy(): string {
     return UserMailRequiredValidator::class;
   }
 

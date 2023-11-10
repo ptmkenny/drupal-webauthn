@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\webauthn\Routing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\webauthn\Form\PublicKeyCredentialRequestForm;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -19,7 +20,7 @@ class RouteProvider {
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  private $config;
+  private ImmutableConfig $config;
 
   /**
    * RouteProvider constructor.
@@ -34,7 +35,7 @@ class RouteProvider {
   /**
    * Defines register/login routes.
    */
-  public function routes() {
+  public function routes(): RouteCollection {
     $route_collection = new RouteCollection();
 
     if (empty($this->config->get('replace_registration_form'))) {

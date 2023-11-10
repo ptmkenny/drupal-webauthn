@@ -20,7 +20,7 @@ class PublicKeyCredentialSourceAccessControlHandler extends EntityAccessControlH
   /**
    * {@inheritdoc}
    */
-  protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+  protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account): AccessResult {
     /** @var \Drupal\webauthn\Entity\PublicKeyCredentialSourceInterface $entity */
     switch ($operation) {
       case 'view':
@@ -46,7 +46,7 @@ class PublicKeyCredentialSourceAccessControlHandler extends EntityAccessControlH
   /**
    * {@inheritdoc}
    */
-  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
+  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL): AccessResult {
     return AccessResult::allowedIfHasPermission($account, 'add public key credential source entities');
   }
 

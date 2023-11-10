@@ -7,13 +7,16 @@ namespace Drupal\webauthn;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\user\UserInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialRequestOptions;
@@ -37,35 +40,35 @@ class Server implements ServerInterface {
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  private $config;
+  private ImmutableConfig $config;
 
   /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  private EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The private temp store service.
    *
    * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
-  private $privateTempStore;
+  private PrivateTempStoreFactory $privateTempStore;
 
   /**
    * The public key credential source repository.
    *
    * @var \Webauthn\PublicKeyCredentialSourceRepository
    */
-  private $pkCredentialSourceRepository;
+  private PublicKeyCredentialSourceRepository $pkCredentialSourceRepository;
 
   /**
    * The request.
    *
    * @var \Symfony\Component\HttpFoundation\Request
    */
-  private $request;
+  private Request $request;
 
   /**
    * Server constructor.
@@ -139,7 +142,7 @@ class Server implements ServerInterface {
   /**
    * {@inheritdoc}
    */
-  public function createUserEntity(UserInterface $user): PublicKeyCredentialUserEntity {
+  public function createUserEntity(UserInterface|AccountInterface $user): PublicKeyCredentialUserEntity {
     return new PublicKeyCredentialUserEntity(
       $user->getAccountName(),
       $user->uuid(),
@@ -160,7 +163,6 @@ class Server implements ServerInterface {
       $request = $psrHttpFactory->createRequest($this->request);
 
       $data = Json::decode($this->privateTempStore->get('attestation'));
-      /** @var \Webauthn\PublicKeyCredentialCreationOptions $options */
       $options = PublicKeyCredentialCreationOptions::createFromArray($data);
 
       if ($options === NULL) {

@@ -67,7 +67,7 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
   /**
    * {@inheritdoc}
    */
-  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
+  public static function preCreate(EntityStorageInterface $storage_controller, array &$values): void {
     parent::preCreate($storage_controller, $values);
 
     $storage = \Drupal::entityTypeManager()->getStorage('user');
@@ -101,7 +101,7 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['publicKeyCredentialId'] = BaseFieldDefinition::create('string')
@@ -177,7 +177,7 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
   /**
    * {@inheritdoc}
    */
-  public function setOwnerId($uid) {
+  public function setOwnerId($uid): PublicKeyCredentialSource {
     $this->set($this->getEntityType()->getKey('uid'), $uid);
     return $this;
   }
@@ -235,7 +235,7 @@ final class PublicKeyCredentialSource extends ContentEntityBase implements Publi
   /**
    * {@inheritdoc}
    */
-  public function getOwner() {
+  public function getOwner(): PublicKeyCredentialSource {
     return $this->get($this->getEntityType()->getKey('uid'))->entity;
   }
 

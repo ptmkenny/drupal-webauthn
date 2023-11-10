@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\webauthn\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Routing\RouteBuildEvent;
 use Drupal\Core\Routing\RoutingEvents;
 use Drupal\webauthn\Form\PublicKeyCredentialRequestForm;
@@ -20,7 +21,7 @@ class UserRouteAlterSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  private $config;
+  private ImmutableConfig $config;
 
   /**
    * UserRouteAlterSubscriber constructor.
@@ -35,7 +36,8 @@ class UserRouteAlterSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
+    $events = [];
     $events[RoutingEvents::ALTER][] = 'onRoutingAlterReplaceLogin';
 
     return $events;
@@ -47,7 +49,7 @@ class UserRouteAlterSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Routing\RouteBuildEvent $event
    *   The event to process.
    */
-  public function onRoutingAlterReplaceLogin(RouteBuildEvent $event) {
+  public function onRoutingAlterReplaceLogin(RouteBuildEvent $event): void {
     $routes = $event->getRouteCollection();
     if (($route = $routes->get('user.login'))
       && !empty($this->config->get('replace_login_form'))) {

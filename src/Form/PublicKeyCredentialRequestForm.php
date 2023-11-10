@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Implements login form based on PK validation.
  */
-class PublicKeyCredentialRequestForm extends FormBase {
+final class PublicKeyCredentialRequestForm extends FormBase {
 
   public const ASSERTION_PREPARE = 'prepare';
 
@@ -27,35 +27,35 @@ class PublicKeyCredentialRequestForm extends FormBase {
    *
    * @var \Drupal\Core\Flood\FloodInterface
    */
-  protected $flood;
+  protected FloodInterface $flood;
 
   /**
    * The user storage.
    *
    * @var \Drupal\user\UserStorageInterface
    */
-  protected $userStorage;
+  protected UserStorageInterface $userStorage;
 
   /**
    * The WebAuthn server instance.
    *
    * @var \Drupal\webauthn\ServerInterface
    */
-  protected $server;
+  protected ServerInterface $server;
 
   /**
    * The renderer.
    *
    * @var \Drupal\Core\Render\RendererInterface
    */
-  protected $renderer;
+  protected RendererInterface $renderer;
 
   /**
    * The form step.
    *
    * @var string
    */
-  protected $step;
+  protected string $step;
 
   /**
    * {@inheritdoc}
@@ -70,7 +70,7 @@ class PublicKeyCredentialRequestForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): PublicKeyCredentialRequestForm {
     return new static(
       $container->get('flood'),
       $container->get('entity_type.manager')->getStorage('user'),
@@ -82,14 +82,14 @@ class PublicKeyCredentialRequestForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'pk_credential_request_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('system.site');
     $this->step = $form_state->get('step') ?? self::ASSERTION_PREPARE;
     $form['#attached']['library'][] = 'core/drupal.form';
@@ -229,7 +229,7 @@ class PublicKeyCredentialRequestForm extends FormBase {
         // The default identifier is a combination of uid and IP address. This
         // is less secure but more resistant to denial-of-service attacks that
         // could lock out all users with public user names.
-        $identifier = $account->id() . '-' . $this->getRequest()->getClientIP();
+        $identifier = $account->id() . '-' . $this->getRequest()->getClientIp();
       }
       $form_state->set('flood_control_user_identifier', $identifier);
 
@@ -300,7 +300,7 @@ class PublicKeyCredentialRequestForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     if ($this->step === self::ASSERTION_PREPARE) {
       /** @var \Drupal\user\UserInterface $user */
       $user = $form_state->get('user');

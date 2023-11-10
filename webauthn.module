@@ -18,7 +18,7 @@ use Drupal\webauthn\Form\PublicKeyCredentialCreationForm;
  * Use module configuration to determine if replace the registration form or
  * add a custom operation to the user entity.
  */
-function webauthn_entity_type_build(&$entity_types) {
+function webauthn_entity_type_build(&$entity_types): void {
   if (!isset($entity_types['user'])) {
     return;
   }
@@ -43,7 +43,7 @@ function webauthn_entity_type_build(&$entity_types) {
  *
  * @see \Drupal\webauthn\Plugin\Validation\Constraint\UserMailRequired
  */
-function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type): void {
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
   if (!empty($fields['mail']) && $entity_type->id() === 'user') {
     $constraints = $fields['mail']->getConstraints();
@@ -60,7 +60,7 @@ function webauthn_entity_base_field_info_alter(&$fields, EntityTypeInterface $en
  *
  * @todo Find a better way to cleanup the form.
  */
-function webauthn_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function webauthn_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
   if ($form_id === 'user_webauthn_form'
     || ($form_id === 'user_register_form'
       && (bool) \Drupal::config('webauthn.settings')
@@ -85,7 +85,7 @@ function webauthn_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  *   - elements: An associative array containing the user information and any
  *   - attributes: HTML attributes for the containing element.
  */
-function template_preprocess_public_key_credential_source(array &$variables) {
+function template_preprocess_public_key_credential_source(array &$variables): void {
   /** @var \Drupal\webauthn\Entity\PublicKeyCredentialSource $public_key_credential_source */
   $public_key_credential_source = $variables['elements']['#public_key_credential_source'];
 
